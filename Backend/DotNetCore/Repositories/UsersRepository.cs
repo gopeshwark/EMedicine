@@ -39,5 +39,27 @@ namespace DotNetCore.Repositories
 
             return response;
         }
+
+        public Response login(Users users, SqlConnection con)
+        {
+            SqlDataAdapter da = new SqlDataAdapter("sp_login", con);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("@Email", users.Email);
+            da.SelectCommand.Parameters.AddWithValue("@Password", users.Password);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            Response response = new Response();
+            if(dt.Rows.Count > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Logged in successfully!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Invalid credentials";
+            }
+            return response;
+        }
     }
 }

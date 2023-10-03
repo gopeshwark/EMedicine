@@ -31,5 +31,16 @@ namespace DotNetCore.Controllers
             response = userRepository.register(users, con);
             return response;
         }
+
+        [HttpPost]
+        [Route("login")]
+        public Response login(Users users)
+        {
+            Response response = new Response();
+            UsersRepository userRepository = new UsersRepository();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+            response = userRepository.login(users, con);
+            return response;
+        }
     }
 }
