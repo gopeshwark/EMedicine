@@ -42,5 +42,15 @@ namespace DotNetCore.Controllers
             response = userRepository.login(users, con);
             return response;
         }
+        
+        [HttpPost]
+        [Route("viewUser")]
+        public Response viewUsers(Users users)
+        {
+            UsersRepository ur = new UsersRepository();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+            Response response = ur.viewUser(users, con);
+            return response;
+        }
     }
 }
