@@ -52,5 +52,15 @@ namespace DotNetCore.Controllers
             Response response = ur.viewUser(users, con);
             return response;
         }
+
+        [HttpPost]
+        [Route("updateProfile")]
+        public Response updateProfile(Users users)
+        {
+            UsersRepository ur = new UsersRepository();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+            Response response = ur.updateProfile(users, con);
+            return response;
+        }
     }
 }
