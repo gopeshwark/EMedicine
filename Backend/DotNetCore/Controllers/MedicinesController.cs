@@ -40,5 +40,15 @@ namespace DotNetCore.Controllers
             Response response = mr.placeOrder(users, con);
             return response;
         }
+
+        [HttpGet]
+        [Route("orderList")]
+        public Response orderList(Users users)
+        {
+            MedicinesRepository mr = new MedicinesRepository();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+            Response response = mr.orderList(users, con);
+            return response;
+        }
     }
 }
