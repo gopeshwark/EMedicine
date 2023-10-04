@@ -13,41 +13,31 @@ namespace DotNetCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicinesController : ControllerBase
+    public class AdminController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public MedicinesController(IConfiguration configuration)
+        public AdminController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         [HttpPost]
-        [Route("addToCart")]
-        public Response addToCart(Cart cart)
+        [Route("upsertMedicine")]
+        public Response upsertMedicine(Medicines medicines)
         {
             MedicinesRepository mr = new MedicinesRepository();
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
-            Response response = mr.addToCart(cart, con);
+            Response response = mr.upsertMedicine(medicines, con);
             return response;
         }
 
-        [HttpPost]
-        [Route("placeOrder")]
-        public Response placeOrder(Users users)
+        [HttpGet]
+        [Route("userList")]
+        public Response userList()
         {
-            MedicinesRepository mr = new MedicinesRepository();
+            UsersRepository ur = new UsersRepository();
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
-            Response response = mr.placeOrder(users, con);
-            return response;
-        }
-
-        [HttpPost]
-        [Route("orderList")]
-        public Response orderList(Users users)
-        {
-            MedicinesRepository mr = new MedicinesRepository();
-            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
-            Response response = mr.orderList(users, con);
+            Response response = ur.userList(con);
             return response;
         }
     }

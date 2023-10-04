@@ -96,5 +96,35 @@ namespace DotNetCore.Repositories
             }
             return response;
         }
+    
+        public Response upsertMedicine(Medicines medicines, SqlConnection con)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("sp_upsertMedicine", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Name", medicines.Name);
+            cmd.Parameters.AddWithValue("@Manufacturer", medicines.Manufacturer);
+            cmd.Parameters.AddWithValue("@UnitPrice", medicines.UnitPrice);
+            cmd.Parameters.AddWithValue("@Discount", medicines.Discount);
+            cmd.Parameters.AddWithValue("@Quantity", medicines.Quantity);
+            cmd.Parameters.AddWithValue("@ExpDate", medicines.ExpDate);
+            cmd.Parameters.AddWithValue("@ImageUrl", medicines.ImageUrl);
+            cmd.Parameters.AddWithValue("@Status", medicines.Status);
+            cmd.Parameters.AddWithValue("@Type", medicines.Type);
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+            if(i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Medicine added successfully";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Medicine did not save. tray agian.";
+            }
+            return response;
+        }
     }
 }
